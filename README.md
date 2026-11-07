@@ -35,7 +35,7 @@ Binds a hotkey that brings a window of an app to the screen under the mouse.
 
 Parameters:
  * opts - A table of options:
-   * `bundleID` (string) - App bundle ID, such as `"com.mitchellh.ghostty"` (required)
+   * `app` (string) - Full path to the `.app` (such as `"/Applications/Ghostty.app"`) or a bundle ID (such as `"com.mitchellh.ghostty"`) (required)
    * `hotkey` (table) - Hotkey as `{mods, key}`, such as `{{"ctrl"}, "`"}` (required)
    * `target`, `maximize`, `launch`, `hideWhenFocused` - Override the `configure` defaults for this binding
 
@@ -46,7 +46,7 @@ Example:
 
 ```lua
 spoon.MoveToMouse:bind{
-  bundleID = "com.mitchellh.ghostty",
+  app = "/Applications/Ghostty.app",
   hotkey = {{"ctrl"}, "`"},
   maximize = true,
 }

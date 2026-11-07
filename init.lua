@@ -22,6 +22,18 @@ local function pick(value, default)
   return value
 end
 
+local function resolveBundleID(app)
+  if app:sub(1, 1) == "/" then
+    local info = hs.application.infoForBundlePath(app)
+    assert(info and info.CFBundleIdentifier, "MoveToMouse: no app bundle at " .. app)
+    return info.CFBundleIdentifier
+  end
+  if app:match("^[%w%-]+%.[%w%.%-]+$") then
+    return app
+  end
+  error("MoveToMouse: app must be a full path to an .app or a bundle ID, got " .. app)
+end
+
 local function windowsFor(bundleID, target)
   local app = hs.application.get(bundleID)
   if not app then
@@ -93,17 +105,17 @@ end
 ---
 --- Parameters:
 ---  * opts - table with:
----    * bundleID - string, app bundle ID, e.g. "com.mitchellh.ghostty" (required)
+---    * app - string, full path to the .app (e.g. "/Applications/Ghostty.app") or a bundle ID (e.g. "com.mitchellh.ghostty") (required)
 ---    * hotkey - table {mods, key}, e.g. {{"ctrl"}, "`"} (required)
 ---    * target, maximize, launch, hideWhenFocused - override the defaults from configure() for this binding
 ---
 --- Returns:
 ---  * The MoveToMouse object
 function obj:bind(opts)
-  assert(opts and opts.bundleID, "MoveToMouse: bundleID required")
+  assert(opts and opts.app, "MoveToMouse: app required")
   assert(opts.hotkey, "MoveToMouse: hotkey required")
 
-  local bundleID = opts.bundleID
+  local bundleID = resolveBundleID(opts.app)
   local defaults = self.defaults
   local target = pick(opts.target, defaults.target)
   local maximize = pick(opts.maximize, defaults.maximize)
