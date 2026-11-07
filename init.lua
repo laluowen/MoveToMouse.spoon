@@ -1,6 +1,6 @@
 local obj = {
   name = "MoveToMouse",
-  version = "1.0.0", -- x-release-please-version
+  version = "2.0.0", -- x-release-please-version
   author = "laluowen",
   license = "MIT - https://opensource.org/licenses/MIT",
   homepage = "https://github.com/laluowen/MoveToMouse.spoon",
